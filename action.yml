@@ -1,0 +1,41 @@
+name: 'Docker cleaner'
+description: 'Removes all docker containers for merged branch'
+inputs:
+  token:
+    description: 'Token'
+    required: true
+    default: ''
+  branch:
+    description: 'Current branch'
+    required: true
+    default: ''
+  repo:
+    description: 'Current repo'
+    required: true
+    default: ''
+  owner:
+    description: 'Owner repo'
+    required: true
+    default: ''
+  azureClientId
+    description: 'Azure Client Id'
+    required: true
+    default: ''
+  azureClientSecret
+    description: 'Azure Client Secret'
+    required: true
+    default: ''
+  azureTenantId
+    description: 'Azure Tenant Id'
+    required: true
+    default: ''
+  azureSubscriptionId
+    description: 'Azure Subscription Id'
+    required: true
+    default: ''
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'node16'
+  main: 'index.js'
