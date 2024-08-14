@@ -17,19 +17,19 @@ inputs:
     description: 'Owner repo'
     required: true
     default: ''
-  azureClientId
+  azureClientId:
     description: 'Azure Client Id'
     required: true
     default: ''
-  azureClientSecret
+  azureClientSecret:
     description: 'Azure Client Secret'
     required: true
     default: ''
-  azureTenantId
+  azureTenantId:
     description: 'Azure Tenant Id'
     required: true
     default: ''
-  azureSubscriptionId
+  azureSubscriptionId:
     description: 'Azure Subscription Id'
     required: true
     default: ''
