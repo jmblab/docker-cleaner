@@ -4,7 +4,6 @@ const github = require('@actions/github');
 async function run() {
     const { execSync } = require('child_process');
     try {
-        const token = core.getInput('token');//?
         const branchName = core.getInput('branch');
         const repoNameWithOwner = core.getInput('repo');  
         const repoOwner = core.getInput('owner');  
@@ -12,28 +11,8 @@ async function run() {
         const azureClientSecret = core.getInput('azureClientSecret');  
         const azureTenantId = core.getInput('azureTenantId');  
         const azureSubscriptionId = core.getInput('azureSubscriptionId');  
+        const registryName = core.getInput('azureRegistryName');
     
-        const repoName = repoNameWithOwner.replace(`${repoOwner}/`, '');
-        let containerRegistryName;
-
-        switch (repoName) {
-            case 'Doner.WMS':
-              containerRegistryName = 'doner';
-              break;
-            case 'PPK':
-              containerRegistryName = 'procam';
-              break;
-            case 'PPK.Auth':
-            containerRegistryName = 'procam';
-            break;
-            default:
-              containerRegistryName = 'default';
-              break;
-          }
-
-        if(containerRegistryName === 'default') {
-        console.log('No valid registry name');
-        return;}
     
         execSync(`az login --service-principal -u ${azureClientId} -p ${azureClientSecret} --tenant ${azureTenantId}`, { stdio: 'inherit' });
 
