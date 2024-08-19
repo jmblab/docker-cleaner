@@ -49,3 +49,4 @@ runs:
       shell: bash
     - name: Run main script
       run: node index.js
+      shell: bash
