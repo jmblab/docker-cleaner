@@ -32,7 +32,7 @@ async function run() {
             console.log(`Branch-specific tags in repository ${repository}:`, branchTags);
 
             branchTags.forEach(tag => {
-                const manifestForTagCommand = `az acr manifest show --name ${registryName} --repository ${repository} --image ${repository}:${tag} --output tsv`
+                const manifestForTagCommand = `az acr manifest show --name ${registryName} --image ${repository}:${tag} --output tsv`
                 const manifestForTag = execSync(manifestForTagCommand).toString().trim().split('\n');
 
                 console.log(`Tag-specific manifests in repository ${repository}:`, manifestForTag);
