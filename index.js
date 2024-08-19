@@ -13,6 +13,7 @@ async function run() {
         const azureSubscriptionId = core.getInput('azureSubscriptionId');  
         const registryName = core.getInput('azureRegistryName');
     
+        console.log(`Actions for bracnh: ${branchName}`)
     
         execSync(`az login --service-principal -u ${azureClientId} -p ${azureClientSecret} --tenant ${azureTenantId}`, { stdio: 'inherit' });
 
@@ -27,7 +28,7 @@ async function run() {
             const tagsListCommand = `az acr repository show-tags --name ${registryName} --repository ${repository} --output tsv`;
             const tags = execSync(tagsListCommand).toString().trim().split('\n');
       
-            console.log(`Tags in repository ${repository}:`, tags);
+            // console.log(`Tags in repository ${repository}:`, tags);
 
             const branchTags = tags.filter(tag => tag.includes(branchName));
             console.log(`Branch-specific tags in repository ${repository}:`, branchTags);
@@ -42,7 +43,7 @@ async function run() {
             
             const manifestsListCommand = `az acr repository show-manifests --name ${registryName} --repository ${repository} --output tsv`;
             const manifests = execSync(manifestsListCommand).toString().trim().split('\n');
-            console.log(`Manifests in repository ${repository}:`, manifests);
+            // console.log(`Manifests in repository ${repository}:`, manifests);
      
             const branchManifests = manifests.filter(manifest => manifest.includes(branchName));
             console.log(`Branch-specific manifests in repository ${repository}:`, branchManifests);
