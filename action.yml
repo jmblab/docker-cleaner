@@ -42,9 +42,9 @@ outputs:
     description: 'The time we greeted you'
 runs:
   using: 'node20'
-  pre:
-    steps:
-      - name: Install Azure CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-  main: 'index.js'
+  steps:
+    - name: Install Azure CLI
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - name: Run main script
+      run: node index.js
