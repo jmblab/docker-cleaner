@@ -43,11 +43,3 @@ outputs:
 runs:
   using: 'node20'
   main: 'index.js'
-  steps:
-    - name: Install Azure CLI
-      run: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      shell: bash
-    - name: Run main script
-      run: node index.js
-      shell: bash
