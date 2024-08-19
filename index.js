@@ -26,13 +26,15 @@ async function run() {
             console.log(`Processing repository: ${repository}`);
       
             const tagsListCommand = `az acr repository show-tags --name ${registryName} --repository ${repository} --output tsv | grep ${modifiedBranchname}`;
-            // const tags = execSync(tagsListCommand).toString().trim().split('\n');
+            const tags = execSync(tagsListCommand).toString().trim().split('\n');
 
             // const branchTags = tags.filter(tag => tag.includes(modifiedBranchname));
             console.log(`Branch-specific tags in repository ${repository}:`, tagsListCommand);
 
-            tagsListCommand.forEach(tag => {
-                const manifestForTag = `az acr manifest list-metadata --name ${registryName} --repository ${repository} --output tsv --image ${repository}:${tag}`
+            tags.forEach(tag => {
+                const manifestForTagCommand = `az acr manifest list-metadata --name ${registryName} --repository ${repository} --output tsv --image ${repository}:${tag}`
+                const manifestForTag = execSync(manifestForTagCommand).toString().trim().split('\n');
+
                 console.log(`Tag-specific manifests in repository ${repository}:`, manifestForTag);
             //usuwanie manifestów
             })
