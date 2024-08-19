@@ -25,13 +25,13 @@ async function run() {
         repositories.forEach(repository => {
             console.log(`Processing repository: ${repository}`);
       
-            const tagsListCommand = `az acr repository show-tags --name ${registryName} --repository ${repository} --output tsv | grep ${modifiedBranchname}`;
+            const tagsListCommand = `az acr repository show-tags --name ${registryName} --repository ${repository} --output tsv`;
             const tags = execSync(tagsListCommand).toString().trim().split('\n');
+            
+            const branchTags = tags.filter(tag => tag.includes(modifiedBranchname));
+            console.log(`Branch-specific tags in repository ${repository}:`, branchTags);
 
-            // const branchTags = tags.filter(tag => tag.includes(modifiedBranchname));
-            console.log(`Branch-specific tags in repository ${repository}:`, tagsListCommand);
-
-            tags.forEach(tag => {
+            branchTags.forEach(tag => {
                 const manifestForTagCommand = `az acr manifest list-metadata --name ${registryName} --repository ${repository} --output tsv --image ${repository}:${tag}`
                 const manifestForTag = execSync(manifestForTagCommand).toString().trim().split('\n');
 
