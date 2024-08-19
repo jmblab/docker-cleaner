@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jmblab/docker-cleaner#readme",
   "dependencies": {
-    "@actions/core": "^1.10.1"
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0"
   }
 }
