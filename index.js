@@ -25,13 +25,18 @@ async function run() {
         repositories.forEach(repository => {
             console.log(`Processing repository: ${repository}`);
       
-            const tagsListCommand = `az acr repository show-tags --name ${registryName} --repository ${repository} --output tsv`;
-            const tags = execSync(tagsListCommand).toString().trim().split('\n');
-      
-            // console.log(`Tags in repository ${repository}:`, tags);
+            const tagsListCommand = `az acr repository show-tags --name ${registryName} --repository ${repository} --output tsv | grep ${modifiedBranchname}`;
+            // const tags = execSync(tagsListCommand).toString().trim().split('\n');
 
-            const branchTags = tags.filter(tag => tag.includes(modifiedBranchname));
-            console.log(`Branch-specific tags in repository ${repository}:`, branchTags);
+            // const branchTags = tags.filter(tag => tag.includes(modifiedBranchname));
+            console.log(`Branch-specific tags in repository ${repository}:`, tagsListCommand);
+
+            tagsListCommand.forEach(tag => {
+                const manifestForTag = `az acr manifest list-metadata --name ${registryName} --repository ${repository} --output tsv --image ${repository}:${tag}`
+                console.log(`Tag-specific manifests in repository ${repository}:`, manifestForTag);
+            //usuwanie manifestów
+            })
+//usiniecie taga
 
           //DOCELOWE USUWANIE
             // branchTags.forEach(tag => {
@@ -41,12 +46,12 @@ async function run() {
             // });
 
             
-            const manifestsListCommand = `az acr repository show-manifests --name ${registryName} --repository ${repository} --output tsv`;
-            const manifests = execSync(manifestsListCommand).toString().trim().split('\n');
-            // console.log(`Manifests in repository ${repository}:`, manifests);
+            // const manifestsListCommand = `az acr manifest list-metadata --name ${registryName} --repository ${repository} --output tsv`;
+            // const manifests = execSync(manifestsListCommand).toString().trim().split('\n');
+            // // console.log(`Manifests in repository ${repository}:`, manifests);
      
-            const branchManifests = manifests.filter(manifest => manifest.includes(modifiedBranchname));
-            console.log(`Branch-specific manifests in repository ${repository}:`, branchManifests);
+            // const branchManifests = manifests.filter(manifest => manifest.includes(modifiedBranchname));
+            // console.log(`Branch-specific manifests in repository ${repository}:`, branchManifests);
 
         //DOCELOWE USUWANIE
             // branchManifests.forEach(manifest => {
