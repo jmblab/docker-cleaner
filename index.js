@@ -13,7 +13,7 @@ async function run() {
         const azureSubscriptionId = core.getInput('azureSubscriptionId');  
         const registryName = core.getInput('azureRegistryName');
     
-        console.log(`Actions for bracnh: ${branchName}`)
+        const modifiedBranchname = branchName.replace(/\//g, "_");
     
         execSync(`az login --service-principal -u ${azureClientId} -p ${azureClientSecret} --tenant ${azureTenantId}`, { stdio: 'inherit' });
 
@@ -30,7 +30,7 @@ async function run() {
       
             // console.log(`Tags in repository ${repository}:`, tags);
 
-            const branchTags = tags.filter(tag => tag.includes(branchName));
+            const branchTags = tags.filter(tag => tag.includes(modifiedBranchname));
             console.log(`Branch-specific tags in repository ${repository}:`, branchTags);
 
           //DOCELOWE USUWANIE
@@ -45,7 +45,7 @@ async function run() {
             const manifests = execSync(manifestsListCommand).toString().trim().split('\n');
             // console.log(`Manifests in repository ${repository}:`, manifests);
      
-            const branchManifests = manifests.filter(manifest => manifest.includes(branchName));
+            const branchManifests = manifests.filter(manifest => manifest.includes(modifiedBranchname));
             console.log(`Branch-specific manifests in repository ${repository}:`, branchManifests);
 
         //DOCELOWE USUWANIE
