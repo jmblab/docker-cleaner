@@ -13,6 +13,11 @@ async function run() {
         const azureSubscriptionId = core.getInput('azureSubscriptionId');  
         const registryName = core.getInput('azureRegistryName');
     
+        if (modifiedBranchname.includes('main') || modifiedBranchname.includes('release')) {
+            console.log('Branch name contains "main" or "release". Skipping operation.');
+            return;
+        }
+
         const modifiedBranchname = branchName.replace(/\//g, "_");
     
         execSync(`az login --service-principal -u ${azureClientId} -p ${azureClientSecret} --tenant ${azureTenantId}`, { stdio: 'inherit' });
@@ -32,37 +37,14 @@ async function run() {
             console.log(`Branch-specific tags in repository ${repository}:`, branchTags);
 
             branchTags.forEach(tag => {
-                const manifestForTagCommand = `az acr manifest show --name ${registryName} --image ${repository}:${tag} --output tsv`
-                const manifestForTag = execSync(manifestForTagCommand).toString().trim().split('\n');
+                console.log('Deleting manifest and tag');
 
-                console.log(`Tag-specific manifests in repository ${repository}:`, manifestForTag);
-            //usuwanie manifestów
+                const deleteCommand = `az acr repository delete -n ${registryName} --image ${repository}:${tag} -y`;
+                execSync(deleteCommand);
+                
+                console.log('Manifest and tag deleted');
             })
-//usiniecie taga
-
-          //DOCELOWE USUWANIE
-            // branchTags.forEach(tag => {
-            //   const deleteTagCommand = `az acr repository delete --name ${registryName} --repository ${repository} --tag ${tag} --yes`;
-            //   execSync(deleteTagCommand, { stdio: 'inherit' });
-            //   console.log(`Deleted tag: ${tag} in repository: ${repository}`);
-            // });
-
-            
-            // const manifestsListCommand = `az acr manifest list-metadata --name ${registryName} --repository ${repository} --output tsv`;
-            // const manifests = execSync(manifestsListCommand).toString().trim().split('\n');
-            // // console.log(`Manifests in repository ${repository}:`, manifests);
-     
-            // const branchManifests = manifests.filter(manifest => manifest.includes(modifiedBranchname));
-            // console.log(`Branch-specific manifests in repository ${repository}:`, branchManifests);
-
-        //DOCELOWE USUWANIE
-            // branchManifests.forEach(manifest => {
-            //     const deleteManifestCommand = `az acr repository delete --name ${registryName} --repository ${repository} --manifest ${manifest} --yes`;
-            //     execSync(deleteManifestCommand, { stdio: 'inherit' });
-            //     console.log(`Deleted manifest: ${manifest} in repository: ${repository}`);
-            // });
-
-            });
+        });
 
         console.log('Operation completed');
     } catch (error) {
