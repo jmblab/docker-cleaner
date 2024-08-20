@@ -12,8 +12,8 @@ async function run() {
         const azureTenantId = core.getInput('azureTenantId');  
         const azureSubscriptionId = core.getInput('azureSubscriptionId');  
         const registryName = core.getInput('azureRegistryName');
-    
-        if (modifiedBranchname.includes('main') || modifiedBranchname.includes('release')) {
+
+        if (branchName.includes('main') || branchName.includes('release')) {
             console.log('Branch name contains "main" or "release". Skipping operation.');
             return;
         }
@@ -41,7 +41,7 @@ async function run() {
 
                 const deleteCommand = `az acr repository delete -n ${registryName} --image ${repository}:${tag} -y`;
                 execSync(deleteCommand);
-                
+
                 console.log('Manifest and tag deleted');
             })
         });
