@@ -39,10 +39,10 @@ async function run() {
             branchTags.forEach(tag => {
                 console.log('Deleting manifest and tag');
 
-                const deleteCommand = `az acr repository delete -n ${registryName} --image ${repository}:${tag} -y`;
+                const deleteCommand = `az acr run --registry ${registryName} --cmd 'acr purge --untagged --filter '${repository}:${tag}' --ago 1h' /dev/null`;
                 execSync(deleteCommand);
 
-                console.log('Manifest and tag deleted');
+                console.log(`Manifest and tag deleted for ${repository}:${tag}`);
             })
         });
 
